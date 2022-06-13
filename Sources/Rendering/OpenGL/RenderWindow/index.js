@@ -267,21 +267,6 @@ function vtkOpenGLRenderWindow(publicAPI, model) {
         model.canvas.getContext('experimental-webgl', options);
     }
 
-    // prevent default context lost handler
-    model.canvas.addEventListener(
-      'webglcontextlost',
-      (event) => {
-        event.preventDefault();
-      },
-      false
-    );
-
-    model.canvas.addEventListener(
-      'webglcontextrestored',
-      publicAPI.restoreContext,
-      false
-    );
-
     return result;
   };
 
@@ -1250,6 +1235,21 @@ export function extend(publicAPI, model, initialValues = {}) {
   model.canvas = document.createElement('canvas');
   model.canvas.style.width = '100%';
   createGLContext();
+
+  // prevent default context lost handler
+  model.canvas.addEventListener(
+    'webglcontextlost',
+    (event) => {
+      event.preventDefault();
+    },
+    false
+  );
+
+  model.canvas.addEventListener(
+    'webglcontextrestored',
+    publicAPI.restoreContext,
+    false
+  );
 
   if (!model.selector) {
     model.selector = vtkOpenGLHardwareSelector.newInstance();
